@@ -1,9 +1,8 @@
 name: Auto Commit
 
 on:
-  push:
-    branches:
-      - main  # Change this to your main branch name if different
+  schedule:
+    - cron: "0 0 * * 0-6"  # Run daily at midnight (00:00) on any day of the week
 
 jobs:
   auto-commit:
@@ -13,26 +12,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Generate random number
+        id: random-number
+        run: echo "::set-output name=number::$(shuf -i 1-7 -n 1)"
+
       - name: Set up Git
         run: |
           git config --global user.name 'Vishal Barot'
           git config --global user.email 'barotvishal12@outlook.com'
 
-      - name: Generate random number of commits
-        id: random-commits
-        run: echo "::set-output name=commits::$(shuf -i 5-7 -n 1)"
-
-      - name: Generate random day of week
-        id: random-day
-        run: echo "::set-output name=day::$(shuf -i 0-6 -n 1)"
-
-      - name: Make changes and commit
+      - name: Make changes
         run: |
-          for ((i=1; i<=${{ steps.random-commits.outputs.commits }}; i++)); do
-            date -d "$((RANDOM % 7)) days ago" +"%Y-%m-%d" > file_$i.txt
-            git add .
-            git commit -m "Auto commit changes on ${{ steps.random-day.outputs.day }}"
-          done
+          echo "random commit" > random.txt
+          git add .
+          git commit -m "Auto commit changes on random day of the week: ${{ steps.random-number.outputs.number }}"
           git push
+
 
 
