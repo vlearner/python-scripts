@@ -32,4 +32,5 @@ jobs:
 
       - name: Push changes
         run: |
+          git pull origin main
           git push https://${{ secrets.PAT_TOKEN }}@github.com/vlearner/python-scripts main
