@@ -14,21 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Generate random date
-        run: |
-          random_day=$((RANDOM % 7))  # Generate random number between 0 and 6 (for 7 days)
-          if [[ $random_day -eq 0 ]]; then
-            random_day=7  # Convert 0 to Sunday
-          fi
-          random_date=$(date +%Y-%m-%d)  # Get current date
-          echo "Random day: $random_day, Date: $random_date" >> random.txt
+      - name: Generate random day of the week
+        id: random-day
+        run: echo "$(shuf -i 1-7 -n 1)" > random-day.txt
+
+      - name: Read random day from file
+        id: read-random-day
+        run: echo "::set-output name=day::$(cat random-day.txt)"
 
       - name: Add and commit changes
         run: |
           git config --global user.email "barotvishal12@outlook.com"
           git config --global user.name "Vishal Barot"
+          echo $(date +%Y-%m-%d) > random.txt
           git add random.txt
-          git commit -m "Automatic commit: $random_date"
+          git commit -m "Auto commit current date on $(date +%Y-%m-%d) (random day of the week: ${{ steps.read-random-day.outputs.day }})"
 
       - name: Push changes
         run: |
