@@ -4,29 +4,32 @@ on:
   schedule:
     - cron: "0 0 * * 0-6"  # Run daily at midnight (00:00) on any day of the week
 
+# on:
+  # schedule:
+    # cron: "0 0 * * 0-6"  # Runs at a random hour between midnight and 4:59 on weekdays and a random hour on Sundays
+
 jobs:
-  auto-commit:
+  random_commit:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Generate random number
-        id: random-number
-        run: echo "::set-output name=number::$(shuf -i 1-7 -n 1)"
-
-      - name: Set up Git
+      - name: Generate random date
         run: |
-          git config --global user.name 'Vishal Barot'
-          git config --global user.email 'barotvishal12@outlook.com'
+          random_day=$((RANDOM % 7))  # Generate random number between 0 and 6 (for 7 days)
+          if [[ $random_day -eq 0 ]]; then
+            random_day=7  # Convert 0 to Sunday
+          fi
+          random_date=$(date +%Y-%m-%d)  # Get current date
+          echo "Random day: $random_day, Date: $random_date" >> random.txt
 
-      - name: Make changes
+      - name: Add and commit changes
         run: |
-          echo "random commit" > random.txt
-          git add .
-          git commit -m "Auto commit changes on random day of the week: ${{ steps.random-number.outputs.number }}"
-          git push
+          git config --global user.email "barotvishal12@outlook.com"
+          git config --global user.name "Vishal Barot"
+          git add random.txt
+          git commit -m "Automatic commit: $random_date"
 
-
-
+      - name: Push changes
+        run: |
+          git push origin master
