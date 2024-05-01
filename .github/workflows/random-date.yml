@@ -14,13 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Generate random day of the week
-        id: random-day
-        run: echo "$(shuf -i 1-7 -n 1)" > random-day.txt
+      # - name: Generate random day of the week
+      #   id: random-day
+      #   run: echo "$(shuf -i 1-7 -n 1)" > random-day.txt
 
       - name: Read random day from file
         id: read-random-day
-        run: echo "::set-output name=day::$(cat random-day.txt)"
+        run: echo "$(date)" >> random.txt
 
       - name: Pull remote changes
         run: |
@@ -30,8 +30,7 @@ jobs:
         run: |
           git config --global user.email "barotvishal12@outlook.com"
           git config --global user.name "Vishal Barot"
-          echo $(date +%Y-%m-%d) > random.txt
-          git add random.txt
+          add: random.txt
           git commit -m "Auto commit current date on $(date +%Y-%m-%d) (random day of the week: ${{ steps.read-random-day.outputs.day }})"
 
       - name: Push changes
