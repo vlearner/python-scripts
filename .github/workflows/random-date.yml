@@ -18,8 +18,7 @@ jobs:
       #   id: random-day
       #   run: echo "$(shuf -i 1-7 -n 1)" > random-day.txt
 
-      - name: Read random day from file
-        id: read-random-day
+      - name: write date on file
         run: echo "$(date)" >> random.txt
 
       - name: Pull remote changes
