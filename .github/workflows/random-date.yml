@@ -30,7 +30,7 @@ jobs:
         run: |
           git config --global user.email "barotvishal12@outlook.com"
           git config --global user.name "Vishal Barot"
-          add: random.txt
+          git add random.txt
           git commit -m "Auto commit current date on $(date +%Y-%m-%d) (random day of the week: ${{ steps.read-random-day.outputs.day }})"
 
       - name: Push changes
