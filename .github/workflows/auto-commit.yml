@@ -1,37 +1,37 @@
-name: Auto Commit
-
-on:
-  schedule:
-    - cron: '0 16 * * 0-6' # Run daily at midnight (00:00) on any day of the week
+# # name: Auto Commit
 
 # on:
-  # schedule:
-    # cron: "0 0 * * 0-6"  # Runs at a random hour between midnight and 4:59 on weekdays and a random hour on Sundays
+#   schedule:
+#     - cron: '0 16 * * 0-6' # Run daily at midnight (00:00) on any day of the week
 
-jobs:
-  random_commit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+# # on:
+#   # schedule:
+#     # cron: "0 0 * * 0-6"  # Runs at a random hour between midnight and 4:59 on weekdays and a random hour on Sundays
+
+# jobs:
+#   random_commit:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
         
-      # - name: Generate random day of the week
-      #   id: random-day
-      #   run: echo "$(shuf -i 1-7 -n 1)" >> random-date.txt
+#       # - name: Generate random day of the week
+#       #   id: random-day
+#       #   run: echo "$(shuf -i 1-7 -n 1)" >> random-date.txt
 
-      - name: write date on file
-        run: echo "$(date)" >> random.txt
+#       - name: write date on file
+#         run: echo "$(date)" >> random.txt
 
-      - name: Pull remote changes
-        run: |
-          git pull origin main
+#       - name: Pull remote changes
+#         run: |
+#           git pull origin main
 
-      - name: Add and commit changes
-        run: |
-          git config --global user.email "barotvishal12@outlook.com"
-          git config --global user.name "Vishal Barot"
-          git add random.txt
-          git commit -m "Auto commit current date on $(date +%Y-%m-%d) (random day of the week: ${{ steps.read-random-day.outputs.day }})"
+#       - name: Add and commit changes
+#         run: |
+#           git config --global user.email "barotvishal12@outlook.com"
+#           git config --global user.name "Vishal Barot"
+#           git add random.txt
+#           git commit -m "Auto commit current date on $(date +%Y-%m-%d) (random day of the week: ${{ steps.read-random-day.outputs.day }})"
 
-      - name: Push changes
-        run: |
-          git push https://${{ secrets.PAT_TOKEN }}@github.com/vlearner/python-scripts main
+#       - name: Push changes
+#         run: |
+#           git push https://${{ secrets.PAT_TOKEN }}@github.com/vlearner/python-scripts main
